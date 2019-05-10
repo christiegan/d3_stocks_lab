@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+body {
+  font: 11px sans-serif;
+}
+
+.axis line,
+.axis text {
+  font: 11px sans-serif;
+}
+.axis path {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+</style>
+<body>
+<link href="style.css" rel="stylesheet">
+<script src="http://d3js.org/d3.v4.min.js"></script>
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
+  <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
+<div id="layout">
+	<div id="title">
+		<p>Stocks Scatterplot </p>
+	</div>
+	<div id="visualization">
+		<svg class="chart"></svg>
+    <!--<script src="d3scatter_step4.js"></script>-->
+    <script src="step1.js"></script>
+         </div>
+         <div id="filters">
+            <label for="type">Type:</label>
+            <select id="mytype"></select>
+            <!--<input type="text" id="mytype" readonly style="border:0; color:#f6931f; font-weight:bold;"> -->
+
+             
+	</div>
+  
+
+</body>
+</html>
+

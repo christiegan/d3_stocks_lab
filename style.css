@@ -1,0 +1,42 @@
+.tooltip {
+	position: absolute;
+	width: 100px;
+	height: 50px;
+	pointer-events: none;	
+}
+
+div {
+        border: 1px solid black;
+}
+
+#layout {
+        width: 1080px;
+        height: 680;
+}
+
+#title, #filters, #infobar {
+        font-family: 'Raleway', sans-serif;
+        text-align: center;
+}
+
+#title {
+        text-align: center;
+        height: 50px;
+    border: none;
+    font-size: 20px;
+}
+
+#visualization {
+        width: 800px;
+        height:450px;
+        float: left;
+        border-top: 0;
+        text-align: center;
+    border-right: 0px;
+}
+
+#filters {
+        width: 276px;
+        height:600px;
+        float: right;
+}
