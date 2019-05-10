@@ -10,6 +10,7 @@ var maxPrice;
 var maxeValue;
  //start with the type set to all, changes this variable everytime the dropdown for type is changed
 var mytype = "all";
+var maxAssists;
 
 d3.csv("stocks.csv", function(error, stocks) {
 //read in the data
@@ -42,9 +43,7 @@ d3.csv("stocks.csv", function(error, stocks) {
           var select = d3.select("#mytype")
             .on("change", function() {
               filterType(dataset, this.value)
-            })
-          //******************************************************************************
-          
+            })          
   
   
           // 3. call update function for the first-time render case
@@ -176,6 +175,58 @@ function filterType(dataset, mtype) {
           .duration(500)
           .style("opacity",0);
       });
-  
-      
+       
+}
+
+$(function() { 
+  $( "#assists" ).slider({ 
+    range: true, 
+    min: 0, 
+    max: maxAssists, 
+    values: [ 0, maxAssists ], 
+    slide: function( event, ui ) { 
+      $( "#assistamount" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] ); 
+      filterAssists(ui.values); 
+    } //end slide function 
+  }); //end slider 
+
+  $( "#assistamount" ).val( $( "#assists" ).slider( "values", 0 ) + 
+  " - " + $( "#assists" ).slider( "values", 1 ) ); 
+}); 
+
+function filterAssists(vol) {
+  var data = vol.filter(function(d) { return d.type == mtype})
+  console.loh(data)
+
+  var circle = chart.selectAll("circle")
+  .data(dataset.filter(function(d) { return d.type == mtype}));
+
+  circle
+      .attr("cx", function(d) { return x(d.price);  })
+      .attr("cy", function(d) { return y(d.eValue);  })
+        .style("fill", function(d) { return col(d.type); });
+
+  circle.exit().remove();
+
+  circle.enter().append("circle")
+      .attr("cx", function(d) { return x(d.price);  })
+      .attr("cy", function(d) { return y(d.eValue);  })
+      .attr("r", 4)
+      .style("stroke", "black")
+        .style("fill", function(d) { return col(d.type); })
+      .style("opacity", 0.5)
+      .on("mouseover",function(d){
+        tooltip.transition()
+          .duration(200)
+          .style("opacity",.9);
+        tooltip.html(d.name+": "+d.type+", $"+d.price+", "+d.eValue+", "+d.vol+", "+d.delta)
+          .style("left",(d3.event.pageX+5)+"px")
+          .style("top",(d3.event.pageY-28)+"px");
+      })
+      .on("mouseout",function(d){
+        tooltip.transition()
+          .duration(500)
+          .style("opacity",0);
+      });
+       
 }
