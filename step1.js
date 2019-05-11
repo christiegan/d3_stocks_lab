@@ -8,8 +8,9 @@ var dataset;
 var maxVol;
 var maxPrice;
 var maxeValue;
- //start with the type set to all, changes this variable everytime the dropdown for type is changed
+//start with the type set to all, changes this variable everytime the dropdown for type is changed
 var mytype = "all";
+//for slider handling
 var maxAssists;
 
 d3.csv("stocks.csv", function(error, stocks) {
@@ -21,10 +22,10 @@ d3.csv("stocks.csv", function(error, stocks) {
      	d.vol = +d.vol;
      	d.delta = +d.delta;
   });
-//dataset is the full dataset -- maintain a copy of this at all times
+
   dataset = stocks;
   
-//max of different variables for sliders
+  //max of different variables for sliders
   maxVol = d3.max(dataset.map(function(d) {return d.vol;}));
   maxPrice = d3.max(dataset.map(function(d) {return d['price'];}));
   maxeValue = d3.max(dataset.map(function(d) {return d['eValue'];}));
@@ -45,14 +46,9 @@ d3.csv("stocks.csv", function(error, stocks) {
               filterType(dataset, this.value)
             })          
   
-  
-          // 3. call update function for the first-time render case
           filterType(d3.select("#mytype").property("value"))
- console.log(types)
 });
 
-
-//none of these depend on the data being loaded so fine to define here
 
 var col = d3.scaleOrdinal(d3.schemeCategory10);
 
@@ -103,8 +99,8 @@ var y = d3.scaleLinear()
       .text("True Value");
 
 
-function drawVis(dataset) { //draw the circiles initially and on each interaction with a control
-
+function drawVis(dataset) { 
+  //draw the circiles initially and on each interaction with a control
 	var circle = chart.selectAll("circle")
 	   .data(dataset);
 
@@ -122,6 +118,7 @@ function drawVis(dataset) { //draw the circiles initially and on each interactio
     	  .style("stroke", "black")
      	  .style("fill", function(d) { return col(d.type); })
         .style("opacity", 0.5)
+        //creating hover over info boxes
         .on("mouseover",function(d){
           tooltip.transition()
             .duration(200)
@@ -139,19 +136,18 @@ function drawVis(dataset) { //draw the circiles initially and on each interactio
 
 
 
-
+//creating dropdown menu to filter certain types of stocks
 function filterType(dataset, mtype) {
-  // filter data based on the given years
-  console.log(dataset)
   //var data = dataset.filter(function(d) { return d.type == mtype})
 
   var circle = chart.selectAll("circle")
   .data(dataset.filter(function(d) { return d.type == mtype}));
 
+  //same code to draw visual (could reduce redundancy by creating separate function)
   circle
       .attr("cx", function(d) { return x(d.price);  })
       .attr("cy", function(d) { return y(d.eValue);  })
-        .style("fill", function(d) { return col(d.type); });
+      .style("fill", function(d) { return col(d.type); });
 
   circle.exit().remove();
 
@@ -178,6 +174,7 @@ function filterType(dataset, mtype) {
        
 }
 
+//creating slider function
 $(function() { 
   $( "#assists" ).slider({ 
     range: true, 
@@ -187,8 +184,8 @@ $(function() {
     slide: function( event, ui ) { 
       $( "#assistamount" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] ); 
       filterAssists(ui.values); 
-    } //end slide function 
-  }); //end slider 
+    } 
+  });  
 
   $( "#assistamount" ).val( $( "#assists" ).slider( "values", 0 ) + 
   " - " + $( "#assists" ).slider( "values", 1 ) ); 
@@ -196,7 +193,6 @@ $(function() {
 
 function filterAssists(vol) {
   var data = vol.filter(function(d) { return d.type == mtype})
-  console.loh(data)
 
   var circle = chart.selectAll("circle")
   .data(dataset.filter(function(d) { return d.type == mtype}));
